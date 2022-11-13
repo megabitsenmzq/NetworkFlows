@@ -11,10 +11,10 @@ import Network
 // See https://stackoverflow.com/questions/25888272/
 extension TrafficInfo {
     struct DataUsageInfo {
-        var wifiReceived: UInt32 = 0
-        var wifiSent: UInt32 = 0
-        var wirelessWanDataReceived: UInt32 = 0
-        var wirelessWanDataSent: UInt32 = 0
+        var wifiReceived: UInt64 = 0
+        var wifiSent: UInt64 = 0
+        var wirelessWanDataReceived: UInt64 = 0
+        var wirelessWanDataSent: UInt64 = 0
 
         mutating func updateInfoByAdding(info: DataUsageInfo) {
             wifiSent += info.wifiSent
@@ -65,12 +65,12 @@ extension TrafficInfo {
 
         if name.hasPrefix(wifiInterfacePrefix) {
             networkData = unsafeBitCast(pointer.pointee.ifa_data, to: UnsafeMutablePointer<if_data>.self)
-            dataUsageInfo.wifiSent += networkData?.pointee.ifi_obytes ?? 0
-            dataUsageInfo.wifiReceived += networkData?.pointee.ifi_ibytes ?? 0
+            dataUsageInfo.wifiSent += UInt64(networkData?.pointee.ifi_obytes ?? 0)
+            dataUsageInfo.wifiReceived += UInt64(networkData?.pointee.ifi_ibytes ?? 0)
         } else if name.hasPrefix(wwanInterfacePrefix) {
             networkData = unsafeBitCast(pointer.pointee.ifa_data, to: UnsafeMutablePointer<if_data>.self)
-            dataUsageInfo.wirelessWanDataSent += networkData?.pointee.ifi_obytes ?? 0
-            dataUsageInfo.wirelessWanDataReceived += networkData?.pointee.ifi_ibytes ?? 0
+            dataUsageInfo.wirelessWanDataSent += UInt64(networkData?.pointee.ifi_obytes ?? 0)
+            dataUsageInfo.wirelessWanDataReceived += UInt64(networkData?.pointee.ifi_ibytes ?? 0)
         }
 
         return dataUsageInfo
