@@ -1,3 +1,3 @@
 # NetworkFlows
 
-A description of this package.
+A simple package can report network traffic to you.
