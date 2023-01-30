@@ -27,10 +27,10 @@ public struct TotalCountInfo {
     public var downTotal: TrafficInfoItem /// Cellular + wifi download count.
 }
 
-/// Privides static total traffic info.
+/// Provides static total traffic info.
 public class TrafficInfo {
     
-    static let formatter = ByteFomatter.shared
+    static let formatter = ByteFormatter.shared
     
     /// Static total traffic info.
     public static func getTotalCountInfo() -> TotalCountInfo {

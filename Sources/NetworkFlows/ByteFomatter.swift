@@ -1,5 +1,5 @@
 //
-//  ByteFomatter.swift
+//  ByteFormatter.swift
 //  
 //
 //  Created by Jinyu Meng on 2022/07/30.
@@ -20,8 +20,8 @@ public enum UnitStyle {
 }
 
 /// The internal formatter which NetworkFlow will use.
-public class ByteFomatter {
-    static let shared = ByteFomatter()
+public class ByteFormatter {
+    static let shared = ByteFormatter()
     
     /// Number format to use in results.
     public static var numberStyle = NumberStyle.auto
@@ -33,7 +33,7 @@ public class ByteFomatter {
         formatter.allowsNonnumericFormatting = false
         formatter.includesUnit = false
         formatter.allowedUnits = [.useKB, .useMB, .useGB, .useTB]
-        switch ByteFomatter.numberStyle {
+        switch ByteFormatter.numberStyle {
         case .auto:
             return String(formatter.string(fromByteCount: byteCount))
         case .consistent:
@@ -47,7 +47,7 @@ public class ByteFomatter {
         formatter.allowsNonnumericFormatting = false
         formatter.includesCount = false
         formatter.allowedUnits = [.useKB, .useMB, .useGB, .useTB]
-        switch ByteFomatter.unitStyle {
+        switch ByteFormatter.unitStyle {
         case .full:
             return String(formatter.string(fromByteCount: byteCount))
         case .short:

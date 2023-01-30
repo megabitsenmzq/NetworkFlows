@@ -33,11 +33,11 @@ public class TrafficMonitor: NSObject {
     public static let shared = TrafficMonitor() /// A singleton of the TrafficMonitor class.
     public weak var delegate: TrafficMonitorDelegate? /// Call you if new info arrived.
     
-    let formatter = ByteFomatter.shared
+    let formatter = ByteFormatter.shared
     var timer: Timer?
     
-    var oldTraffic: TotalCountInfo?
-    var oldTrafficPerSecond: TrafficPerSecondInfo?
+    var historyTraffic: TotalCountInfo?
+    var historyTrafficPerSecond: TrafficPerSecondInfo?
     
     override init() {
         super.init()
@@ -48,34 +48,34 @@ public class TrafficMonitor: NSObject {
     
     @objc func timerUpdated() {
         guard let info = calcTrafficPerSecondInfo() else { return }
-        oldTrafficPerSecond = info
+        historyTrafficPerSecond = info
         delegate?.trafficMonitor(updatedInfo: info)
     }
     
-    /// Get latest traffic per second for one time. Non-async version of this function also avaliable.
+    /// Get latest traffic per second for one time. Non-async version of this function also available.
     /// - Returns: Latest traffic per second info.
     @available(iOS 13.0, *)
     public func getTrafficPerSecondInfo() async throws -> TrafficPerSecondInfo {
-        if let oldTrafficPerSecond = oldTrafficPerSecond {
-            return oldTrafficPerSecond
+        if let historyTrafficPerSecond = historyTrafficPerSecond {
+            return historyTrafficPerSecond
         } else {
             try await Task.sleep(nanoseconds: 1_000_000_000)
-            guard let oldTrafficPerSecond = oldTrafficPerSecond else {
+            guard let historyTrafficPerSecond = historyTrafficPerSecond else {
                 throw TrafficMonitorError.internalError("Timer not running.")
             }
-            return oldTrafficPerSecond
+            return historyTrafficPerSecond
         }
     }
     
-    /// Get latest traffic per second for one time. Async version of this function also avaliable.
+    /// Get latest traffic per second for one time. Async version of this function also available.
     /// - Parameter completion: Callback to give you latest traffic per second info.
     public func getTrafficPerSecondInfo(completion: @escaping (TrafficPerSecondInfo)->()) {
-        if let oldTrafficPerSecond = oldTrafficPerSecond {
-            completion(oldTrafficPerSecond)
+        if let historyTrafficPerSecond = historyTrafficPerSecond {
+            completion(historyTrafficPerSecond)
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                guard let oldTrafficPerSecond = self.oldTrafficPerSecond else { return }
-                completion(oldTrafficPerSecond)
+                guard let historyTrafficPerSecond = self.historyTrafficPerSecond else { return }
+                completion(historyTrafficPerSecond)
             }
         }
     }
@@ -83,21 +83,21 @@ public class TrafficMonitor: NSObject {
     func calcTrafficPerSecondInfo() -> TrafficPerSecondInfo? {
         let trafficInfo = TrafficInfo.getTotalCountInfo()
         
-        guard let oldTraffic = oldTraffic else {
-            oldTraffic = trafficInfo
+        guard let historyTraffic = historyTraffic else {
+            historyTraffic = trafficInfo
             return nil
         }
         
         let cellularUp = TrafficInfoItem(
-            byteCount: trafficInfo.cellularUp.byteCount - oldTraffic.cellularUp.byteCount,
-            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.cellularUp.byteCount - oldTraffic.cellularUp.byteCount)),
-            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.cellularUp.byteCount - oldTraffic.cellularUp.byteCount)) + "/s"
+            byteCount: trafficInfo.cellularUp.byteCount - historyTraffic.cellularUp.byteCount,
+            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.cellularUp.byteCount - historyTraffic.cellularUp.byteCount)),
+            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.cellularUp.byteCount - historyTraffic.cellularUp.byteCount)) + "/s"
         )
         
         let cellularDown = TrafficInfoItem(
-            byteCount: trafficInfo.cellularDown.byteCount - oldTraffic.cellularDown.byteCount,
-            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.cellularDown.byteCount - oldTraffic.cellularDown.byteCount)),
-            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.cellularDown.byteCount - oldTraffic.cellularDown.byteCount)) + "/s"
+            byteCount: trafficInfo.cellularDown.byteCount - historyTraffic.cellularDown.byteCount,
+            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.cellularDown.byteCount - historyTraffic.cellularDown.byteCount)),
+            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.cellularDown.byteCount - historyTraffic.cellularDown.byteCount)) + "/s"
         )
         
         let cellularTotal = TrafficInfoItem(
@@ -107,15 +107,15 @@ public class TrafficMonitor: NSObject {
         )
         
         let wifiUp = TrafficInfoItem(
-            byteCount: trafficInfo.wifiUp.byteCount - oldTraffic.wifiUp.byteCount,
-            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.wifiUp.byteCount - oldTraffic.wifiUp.byteCount)),
-            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.wifiUp.byteCount - oldTraffic.wifiUp.byteCount)) + "/s"
+            byteCount: trafficInfo.wifiUp.byteCount - historyTraffic.wifiUp.byteCount,
+            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.wifiUp.byteCount - historyTraffic.wifiUp.byteCount)),
+            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.wifiUp.byteCount - historyTraffic.wifiUp.byteCount)) + "/s"
         )
         
         let wifiDown = TrafficInfoItem(
-            byteCount: trafficInfo.wifiDown.byteCount - oldTraffic.wifiDown.byteCount,
-            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.wifiDown.byteCount - oldTraffic.wifiDown.byteCount)),
-            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.wifiDown.byteCount - oldTraffic.wifiDown.byteCount)) + "/s"
+            byteCount: trafficInfo.wifiDown.byteCount - historyTraffic.wifiDown.byteCount,
+            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.wifiDown.byteCount - historyTraffic.wifiDown.byteCount)),
+            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.wifiDown.byteCount - historyTraffic.wifiDown.byteCount)) + "/s"
         )
         
         let wifiTotal = TrafficInfoItem(
@@ -148,7 +148,7 @@ public class TrafficMonitor: NSObject {
             downTrafficTotal: downTotal
         )
         
-        self.oldTraffic = trafficInfo
+        self.historyTraffic = trafficInfo
         
         return info
     }
