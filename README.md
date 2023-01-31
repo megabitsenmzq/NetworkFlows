@@ -4,7 +4,7 @@ A simple SwiftPM package reporting network traffic to you.
 
 ## Introduction
 
-![screenshot](assets/screenshot.png)
+<img src="assets/screenshot.png" width=300 />
 
 NetworkFlows provides you with all the information you need to display network traffic.
 
