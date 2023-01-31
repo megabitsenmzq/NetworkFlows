@@ -50,7 +50,7 @@ func trafficMonitor(updatedInfo: TrafficInfo) {
 TrafficMonitor.shared.delegate = self
 ```
 
-That's it!
+That's it! Check out the demo app for more information.
 
 ### Result Struct
 ```
