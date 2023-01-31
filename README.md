@@ -26,11 +26,11 @@ Value and unit are in separate properties, so you can display them as you like.
 ```
 2. Show everything you want.
 ```
-Text(traffic.newTrafficInfo?.downTrafficTotal.humanReadableNumber ?? "--")
+Text(traffic.newTrafficInfo?.totalTrafficInfo.downTotal.humanReadableNumber ?? "--")
 +
 Text(" ")
 +
-Text(traffic.newTrafficInfo?.downTrafficTotal.humanReadableNumberUnit ?? "--")
+Text(traffic.newTrafficInfo?.totalTrafficInfo.downTotal.humanReadableNumberUnit ?? "--")
 ```
 It should look like: ``` 100 KB/s ```.
 
@@ -73,7 +73,7 @@ TrafficInfo
 └── downTrafficTotal
 
 TrafficInfoItem
-├── byteCount: Int
-├── humanReadableNumber: String
-└── humanReadableNumberUnit: String
+├── byteCount: Int // Number count in bytes.
+├── humanReadableNumber: String // "100.5"
+└── humanReadableNumberUnit: String // "MB"
 ```

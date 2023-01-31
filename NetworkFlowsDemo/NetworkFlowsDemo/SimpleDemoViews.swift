@@ -32,8 +32,8 @@ class DelegateDemoViewModal: ObservableObject, TrafficMonitorDelegate {
     }
     
     func trafficMonitor(updatedInfo: TrafficInfo) {
-        let number = updatedInfo.totalTrafficInfo.downTotal.humanReadableNumber
-        let unit = updatedInfo.totalTrafficInfo.downTotal.humanReadableNumberUnit
+        let number = updatedInfo.downTrafficTotal.humanReadableNumber
+        let unit = updatedInfo.downTrafficTotal.humanReadableNumberUnit
         downTotalPerSecond = number + " " + unit
     }
 }

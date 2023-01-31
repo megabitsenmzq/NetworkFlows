@@ -10,21 +10,21 @@ import Network
 
 /// Some traffic info result.
 public struct TrafficInfoItem {
-    public var byteCount: Int /// Data count in bytes.
+    public var byteCount: Int /// Number count in bytes.
     public var humanReadableNumber: String /// Number part of the formatted string. "100.5"
     public var humanReadableNumberUnit: String /// Unit part of the formatted string. "MB"
 }
 
 /// Static total traffic info.
 public struct TotalTrafficInfo {
-    public var cellularUp: TrafficInfoItem /// Cellular upload count.
-    public var cellularDown: TrafficInfoItem /// Cellular download count.
-    public var cellularTotal: TrafficInfoItem /// Cellular uploads + downloads count.
-    public var wifiUp: TrafficInfoItem /// Wifi upload count.
-    public var wifiDown: TrafficInfoItem /// Wifi download count.
-    public var wifiTotal: TrafficInfoItem /// Wifi uploads + downloads count.
-    public var upTotal: TrafficInfoItem /// Cellular + wifi upload count.
-    public var downTotal: TrafficInfoItem /// Cellular + wifi download count.
+    public var cellularUp: TrafficInfoItem /// Cellular upload total.
+    public var cellularDown: TrafficInfoItem /// Cellular download total.
+    public var cellularTotal: TrafficInfoItem /// Cellular uploads + downloads total.
+    public var wifiUp: TrafficInfoItem /// Wifi upload total.
+    public var wifiDown: TrafficInfoItem /// Wifi download total.
+    public var wifiTotal: TrafficInfoItem /// Wifi uploads + downloads total.
+    public var upTotal: TrafficInfoItem /// Cellular + wifi upload total.
+    public var downTotal: TrafficInfoItem /// Cellular + wifi download total.
 }
 
 /// Provides static total traffic info.
