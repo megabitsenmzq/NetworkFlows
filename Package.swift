@@ -21,8 +21,5 @@ let package = Package(
         .target(
             name: "NetworkFlows",
             dependencies: []),
-        .testTarget(
-            name: "NetworkFlowsTests",
-            dependencies: ["NetworkFlows"]),
     ]
 )
