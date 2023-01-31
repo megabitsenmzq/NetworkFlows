@@ -12,8 +12,8 @@ enum TrafficMonitorError: Error {
 }
 
 
-public struct TrafficPerSecondInfo {
-    public var totalTrafficInfo: TotalCountInfo
+public struct TrafficInfo {
+    public var totalTrafficInfo: TotalTrafficInfo
     public var cellularTrafficUp: TrafficInfoItem
     public var cellularTrafficDown: TrafficInfoItem
     public var cellularTrafficTotal: TrafficInfoItem
@@ -26,7 +26,7 @@ public struct TrafficPerSecondInfo {
 
 /// A delegate for TrafficMonitor class. Call you if new info arrived.
 public protocol TrafficMonitorDelegate: AnyObject {
-    func trafficMonitor(updatedInfo: TrafficPerSecondInfo) /// Call you if new info arrived.
+    func trafficMonitor(updatedInfo: TrafficInfo) /// Call you if new info arrived.
 }
 
 public class TrafficMonitor: NSObject {
@@ -36,8 +36,8 @@ public class TrafficMonitor: NSObject {
     let formatter = ByteFormatter.shared
     var timer: Timer?
     
-    var historyTraffic: TotalCountInfo?
-    var historyTrafficPerSecond: TrafficPerSecondInfo?
+    var historyTotal: TotalTrafficInfo?
+    var newTrafficInfo: TrafficInfo?
     
     override init() {
         super.init()
@@ -47,44 +47,45 @@ public class TrafficMonitor: NSObject {
     }
     
     @objc func timerUpdated() {
-        guard let info = calcTrafficPerSecondInfo() else { return }
-        historyTrafficPerSecond = info
+        guard let info = calcTrafficInfo() else { return }
+        newTrafficInfo = info
         delegate?.trafficMonitor(updatedInfo: info)
     }
     
     /// Get latest traffic per second for one time. Non-async version of this function also available.
     /// - Returns: Latest traffic per second info.
+    @available(macOS 10.15, *)
     @available(iOS 13.0, *)
-    public func getTrafficPerSecondInfo() async throws -> TrafficPerSecondInfo {
-        if let historyTrafficPerSecond = historyTrafficPerSecond {
-            return historyTrafficPerSecond
+    public func getTrafficInfo() async throws -> TrafficInfo {
+        if let newTrafficInfo = newTrafficInfo {
+            return newTrafficInfo
         } else {
             try await Task.sleep(nanoseconds: 1_000_000_000)
-            guard let historyTrafficPerSecond = historyTrafficPerSecond else {
+            guard let newTrafficInfo = newTrafficInfo else {
                 throw TrafficMonitorError.internalError("Timer not running.")
             }
-            return historyTrafficPerSecond
+            return newTrafficInfo
         }
     }
     
     /// Get latest traffic per second for one time. Async version of this function also available.
     /// - Parameter completion: Callback to give you latest traffic per second info.
-    public func getTrafficPerSecondInfo(completion: @escaping (TrafficPerSecondInfo)->()) {
-        if let historyTrafficPerSecond = historyTrafficPerSecond {
-            completion(historyTrafficPerSecond)
+    public func getTrafficInfo(completion: @escaping (TrafficInfo)->()) {
+        if let newTrafficInfo = newTrafficInfo {
+            completion(newTrafficInfo)
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                guard let historyTrafficPerSecond = self.historyTrafficPerSecond else { return }
-                completion(historyTrafficPerSecond)
+                guard let newTrafficInfo = self.newTrafficInfo else { return }
+                completion(newTrafficInfo)
             }
         }
     }
     
-    func calcTrafficPerSecondInfo() -> TrafficPerSecondInfo? {
-        let trafficInfo = TrafficInfo.getTotalCountInfo()
+    func calcTrafficInfo() -> TrafficInfo? {
+        let trafficInfo = TotalTraffic.getTotalTrafficInfo()
         
-        guard let historyTraffic = historyTraffic else {
-            historyTraffic = trafficInfo
+        guard let historyTraffic = historyTotal else {
+            historyTotal = trafficInfo
             return nil
         }
         
@@ -136,7 +137,7 @@ public class TrafficMonitor: NSObject {
             humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(cellularDown.byteCount + wifiDown.byteCount)) + "/s"
         )
         
-        let info = TrafficPerSecondInfo(
+        let info = TrafficInfo(
             totalTrafficInfo: trafficInfo,
             cellularTrafficUp: cellularUp,
             cellularTrafficDown: cellularDown,
@@ -148,7 +149,7 @@ public class TrafficMonitor: NSObject {
             downTrafficTotal: downTotal
         )
         
-        self.historyTraffic = trafficInfo
+        self.historyTotal = trafficInfo
         
         return info
     }

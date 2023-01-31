@@ -6,16 +6,14 @@
 //
 
 import SwiftUI
-import NetworkFlows
 
 struct ContentView: View {
-    @ObservedObject var traffic = ObservableTrafficMonitor()
     var body: some View {
         VStack {
-            Text("123")
-            Text(traffic.historyTraffic?.upTotal.humanReadableNumber ?? "")
+            ObservedDemoView()
+            DelegateDemoView()
+            ComplexDemoView()
         }
-        .padding()
     }
 }
 

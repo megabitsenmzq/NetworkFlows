@@ -12,6 +12,8 @@
 		C0CE2CD72988421B00C7B2CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CE2CD62988421B00C7B2CE /* Assets.xcassets */; };
 		C0CE2CDB2988421B00C7B2CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CE2CDA2988421B00C7B2CE /* Preview Assets.xcassets */; };
 		C0CE2CE52988423D00C7B2CE /* NetworkFlows in Frameworks */ = {isa = PBXBuildFile; productRef = C0CE2CE42988423D00C7B2CE /* NetworkFlows */; };
+		C0CE2CEB29897E4A00C7B2CE /* SimpleDemoViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE2CEA29897E4A00C7B2CE /* SimpleDemoViews.swift */; };
+		C0CE2CED298985E300C7B2CE /* ComplexDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE2CEC298985E300C7B2CE /* ComplexDemoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		C0CE2CD82988421B00C7B2CE /* NetworkFlowsDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NetworkFlowsDemo.entitlements; sourceTree = "<group>"; };
 		C0CE2CDA2988421B00C7B2CE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C0CE2CE22988423300C7B2CE /* NetworkFlows */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NetworkFlows; path = ..; sourceTree = "<group>"; };
+		C0CE2CEA29897E4A00C7B2CE /* SimpleDemoViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDemoViews.swift; sourceTree = "<group>"; };
+		C0CE2CEC298985E300C7B2CE /* ComplexDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexDemoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,8 @@
 			children = (
 				C0CE2CD22988421A00C7B2CE /* NetworkFlowsDemoApp.swift */,
 				C0CE2CD42988421A00C7B2CE /* ContentView.swift */,
+				C0CE2CEA29897E4A00C7B2CE /* SimpleDemoViews.swift */,
+				C0CE2CEC298985E300C7B2CE /* ComplexDemoView.swift */,
 				C0CE2CD62988421B00C7B2CE /* Assets.xcassets */,
 				C0CE2CD82988421B00C7B2CE /* NetworkFlowsDemo.entitlements */,
 				C0CE2CD92988421B00C7B2CE /* Preview Content */,
@@ -162,7 +168,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0CE2CED298985E300C7B2CE /* ComplexDemoView.swift in Sources */,
 				C0CE2CD52988421A00C7B2CE /* ContentView.swift in Sources */,
+				C0CE2CEB29897E4A00C7B2CE /* SimpleDemoViews.swift in Sources */,
 				C0CE2CD32988421A00C7B2CE /* NetworkFlowsDemoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

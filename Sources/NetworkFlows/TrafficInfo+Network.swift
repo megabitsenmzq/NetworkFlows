@@ -9,7 +9,7 @@ import Foundation
 import Network
 
 // See https://stackoverflow.com/questions/25888272/
-extension TrafficInfo {
+extension TotalTraffic {
     struct DataUsageInfo {
         var wifiReceived: UInt64 = 0
         var wifiSent: UInt64 = 0
