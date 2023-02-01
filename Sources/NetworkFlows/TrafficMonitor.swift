@@ -17,7 +17,7 @@ public protocol TrafficMonitorDelegate: AnyObject {
     func trafficMonitor(updatedInfo: TrafficInfo) /// Call you if new info arrived.
 }
 
-/// Main class.
+/// Main class, monitor total traffic every second.
 public class TrafficMonitor: NSObject {
     public static let shared = TrafficMonitor()
     public weak var delegate: TrafficMonitorDelegate?
