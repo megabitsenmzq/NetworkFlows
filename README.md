@@ -1,5 +1,8 @@
 # NetworkFlows
 
+[![Language](https://img.shields.io/badge/Swift-5.6-brightgreen.svg)](http://swift.org)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/vapor-community/markdown/master/LICENSE)
+
 A simple SwiftPM package reporting network traffic to you.
 
 ## Introduction
