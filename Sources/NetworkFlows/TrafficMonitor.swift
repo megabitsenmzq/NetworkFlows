@@ -11,20 +11,21 @@ enum TrafficMonitorError: Error {
     case internalError(String)
 }
 
-
+/// Result struct.
 public struct TrafficInfo {
     public var totalTraffic: TrafficInfoPack
     public var trafficPerSecond: TrafficInfoPack
 }
 
-/// A delegate for TrafficMonitor class. Call you if new info arrived.
+/// A delegate for the TrafficMonitor class. Implement to receive new traffic info.
 public protocol TrafficMonitorDelegate: AnyObject {
     func trafficMonitor(updatedInfo: TrafficInfo) /// Call you if new info arrived.
 }
 
+/// Main class.
 public class TrafficMonitor: NSObject {
-    public static let shared = TrafficMonitor() /// A singleton of the TrafficMonitor class.
-    public weak var delegate: TrafficMonitorDelegate? /// Call you if new info arrived.
+    public static let shared = TrafficMonitor()
+    public weak var delegate: TrafficMonitorDelegate?
     
     let formatter = ByteFormatter.shared
     var timer: Timer?
@@ -45,7 +46,7 @@ public class TrafficMonitor: NSObject {
         delegate?.trafficMonitor(updatedInfo: info)
     }
     
-    /// Get latest traffic per second for one time. Non-async version of this function also available.
+    /// Get the latest traffic info for one time. A Non-async version of this function is also available.
     /// - Returns: Latest traffic per second info.
     @available(macOS 10.15, *)
     @available(iOS 13.0, *)
@@ -61,7 +62,7 @@ public class TrafficMonitor: NSObject {
         }
     }
     
-    /// Get latest traffic per second for one time. Async version of this function also available.
+    /// Get the latest traffic info for one time. An Async version of this function is also available.
     /// - Parameter completion: Callback to give you latest traffic per second info.
     public func getTrafficInfo(completion: @escaping (TrafficInfo)->()) {
         if let newTrafficInfo = newTrafficInfo {

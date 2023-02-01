@@ -8,26 +8,26 @@
 import Foundation
 import Network
 
-/// Some traffic info result.
+/// An item inside a traffic info pack.
 public struct TrafficInfoItem {
     public var byteCount: Int /// Number count in bytes.
     public var humanReadableNumber: String /// Number part of the formatted string. "100.5"
     public var humanReadableNumberUnit: String /// Unit part of the formatted string. "MB"
 }
 
-/// Static total traffic info.
+/// A pack of traffic info. Represents total or traffic per second.
 public struct TrafficInfoPack {
-    public var cellularUp: TrafficInfoItem /// Cellular upload total.
-    public var cellularDown: TrafficInfoItem /// Cellular download total.
-    public var cellularTotal: TrafficInfoItem /// Cellular uploads + downloads total.
-    public var wifiUp: TrafficInfoItem /// Wifi upload total.
-    public var wifiDown: TrafficInfoItem /// Wifi download total.
-    public var wifiTotal: TrafficInfoItem /// Wifi uploads + downloads total.
-    public var upTotal: TrafficInfoItem /// Cellular + wifi upload total.
-    public var downTotal: TrafficInfoItem /// Cellular + wifi download total.
+    public var cellularUp: TrafficInfoItem /// Cellular upload.
+    public var cellularDown: TrafficInfoItem /// Cellular download.
+    public var cellularTotal: TrafficInfoItem /// Cellular uploads + downloads.
+    public var wifiUp: TrafficInfoItem /// Wifi upload.
+    public var wifiDown: TrafficInfoItem /// Wifi download.
+    public var wifiTotal: TrafficInfoItem /// Wifi uploads + downloads.
+    public var upTotal: TrafficInfoItem /// Cellular + wifi upload.
+    public var downTotal: TrafficInfoItem /// Cellular + wifi download.
 }
 
-/// Provides static total traffic info.
+/// Provides current total traffic info.
 public class TotalTraffic {
     
     static let formatter = ByteFormatter.shared
