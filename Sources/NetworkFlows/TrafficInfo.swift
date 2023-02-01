@@ -16,7 +16,7 @@ public struct TrafficInfoItem {
 }
 
 /// Static total traffic info.
-public struct TotalTrafficInfo {
+public struct TrafficInfoPack {
     public var cellularUp: TrafficInfoItem /// Cellular upload total.
     public var cellularDown: TrafficInfoItem /// Cellular download total.
     public var cellularTotal: TrafficInfoItem /// Cellular uploads + downloads total.
@@ -33,7 +33,7 @@ public class TotalTraffic {
     static let formatter = ByteFormatter.shared
     
     /// Static total traffic info.
-    public static func getTotalTrafficInfo() -> TotalTrafficInfo {
+    public static func getTotalTraffic() -> TrafficInfoPack {
         let info = getDataUsage()
         
         let cellularUp = TrafficInfoItem(
@@ -84,7 +84,7 @@ public class TotalTraffic {
             humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(cellularDown.byteCount + wifiDown.byteCount))
         )
         
-        return TotalTrafficInfo(
+        return TrafficInfoPack(
             cellularUp: cellularUp,
             cellularDown: cellularDown,
             cellularTotal: cellularTotal,

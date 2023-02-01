@@ -14,11 +14,11 @@ struct ObservedDemoView: View {
     var body: some View {
         VStack {
             Text("ObservedDemoView")
-            Text(traffic.newTrafficInfo?.downTrafficTotal.humanReadableNumber ?? "--")
+            Text(traffic.newTrafficInfo?.trafficPerSecond.downTotal.humanReadableNumber ?? "--")
             +
             Text(" ")
             +
-            Text(traffic.newTrafficInfo?.downTrafficTotal.humanReadableNumberUnit ?? "--")
+            Text(traffic.newTrafficInfo?.trafficPerSecond.downTotal.humanReadableNumberUnit ?? "--")
         }
         .padding()
     }
@@ -32,8 +32,8 @@ class DelegateDemoViewModal: ObservableObject, TrafficMonitorDelegate {
     }
     
     func trafficMonitor(updatedInfo: TrafficInfo) {
-        let number = updatedInfo.downTrafficTotal.humanReadableNumber
-        let unit = updatedInfo.downTrafficTotal.humanReadableNumberUnit
+        let number = updatedInfo.trafficPerSecond.downTotal.humanReadableNumber
+        let unit = updatedInfo.trafficPerSecond.downTotal.humanReadableNumberUnit
         downTotalPerSecond = number + " " + unit
     }
 }

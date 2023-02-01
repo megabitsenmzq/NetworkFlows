@@ -13,15 +13,8 @@ enum TrafficMonitorError: Error {
 
 
 public struct TrafficInfo {
-    public var totalTrafficInfo: TotalTrafficInfo
-    public var cellularTrafficUp: TrafficInfoItem
-    public var cellularTrafficDown: TrafficInfoItem
-    public var cellularTrafficTotal: TrafficInfoItem
-    public var wifiTrafficUp: TrafficInfoItem
-    public var wifiTrafficDown: TrafficInfoItem
-    public var wifiTrafficTotal: TrafficInfoItem
-    public var upTrafficTotal: TrafficInfoItem
-    public var downTrafficTotal: TrafficInfoItem
+    public var totalTraffic: TrafficInfoPack
+    public var trafficPerSecond: TrafficInfoPack
 }
 
 /// A delegate for TrafficMonitor class. Call you if new info arrived.
@@ -36,7 +29,7 @@ public class TrafficMonitor: NSObject {
     let formatter = ByteFormatter.shared
     var timer: Timer?
     
-    var historyTotal: TotalTrafficInfo?
+    var historyTotal: TrafficInfoPack?
     var newTrafficInfo: TrafficInfo?
     
     override init() {
@@ -82,23 +75,23 @@ public class TrafficMonitor: NSObject {
     }
     
     func calcTrafficInfo() -> TrafficInfo? {
-        let trafficInfo = TotalTraffic.getTotalTrafficInfo()
+        let totalTraffic = TotalTraffic.getTotalTraffic()
         
         guard let historyTraffic = historyTotal else {
-            historyTotal = trafficInfo
+            historyTotal = totalTraffic
             return nil
         }
         
         let cellularUp = TrafficInfoItem(
-            byteCount: trafficInfo.cellularUp.byteCount - historyTraffic.cellularUp.byteCount,
-            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.cellularUp.byteCount - historyTraffic.cellularUp.byteCount)),
-            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.cellularUp.byteCount - historyTraffic.cellularUp.byteCount)) + "/s"
+            byteCount: totalTraffic.cellularUp.byteCount - historyTraffic.cellularUp.byteCount,
+            humanReadableNumber: formatter.humanReadableNumber(Int64(totalTraffic.cellularUp.byteCount - historyTraffic.cellularUp.byteCount)),
+            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(totalTraffic.cellularUp.byteCount - historyTraffic.cellularUp.byteCount)) + "/s"
         )
         
         let cellularDown = TrafficInfoItem(
-            byteCount: trafficInfo.cellularDown.byteCount - historyTraffic.cellularDown.byteCount,
-            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.cellularDown.byteCount - historyTraffic.cellularDown.byteCount)),
-            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.cellularDown.byteCount - historyTraffic.cellularDown.byteCount)) + "/s"
+            byteCount: totalTraffic.cellularDown.byteCount - historyTraffic.cellularDown.byteCount,
+            humanReadableNumber: formatter.humanReadableNumber(Int64(totalTraffic.cellularDown.byteCount - historyTraffic.cellularDown.byteCount)),
+            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(totalTraffic.cellularDown.byteCount - historyTraffic.cellularDown.byteCount)) + "/s"
         )
         
         let cellularTotal = TrafficInfoItem(
@@ -108,15 +101,15 @@ public class TrafficMonitor: NSObject {
         )
         
         let wifiUp = TrafficInfoItem(
-            byteCount: trafficInfo.wifiUp.byteCount - historyTraffic.wifiUp.byteCount,
-            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.wifiUp.byteCount - historyTraffic.wifiUp.byteCount)),
-            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.wifiUp.byteCount - historyTraffic.wifiUp.byteCount)) + "/s"
+            byteCount: totalTraffic.wifiUp.byteCount - historyTraffic.wifiUp.byteCount,
+            humanReadableNumber: formatter.humanReadableNumber(Int64(totalTraffic.wifiUp.byteCount - historyTraffic.wifiUp.byteCount)),
+            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(totalTraffic.wifiUp.byteCount - historyTraffic.wifiUp.byteCount)) + "/s"
         )
         
         let wifiDown = TrafficInfoItem(
-            byteCount: trafficInfo.wifiDown.byteCount - historyTraffic.wifiDown.byteCount,
-            humanReadableNumber: formatter.humanReadableNumber(Int64(trafficInfo.wifiDown.byteCount - historyTraffic.wifiDown.byteCount)),
-            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(trafficInfo.wifiDown.byteCount - historyTraffic.wifiDown.byteCount)) + "/s"
+            byteCount: totalTraffic.wifiDown.byteCount - historyTraffic.wifiDown.byteCount,
+            humanReadableNumber: formatter.humanReadableNumber(Int64(totalTraffic.wifiDown.byteCount - historyTraffic.wifiDown.byteCount)),
+            humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(totalTraffic.wifiDown.byteCount - historyTraffic.wifiDown.byteCount)) + "/s"
         )
         
         let wifiTotal = TrafficInfoItem(
@@ -137,19 +130,23 @@ public class TrafficMonitor: NSObject {
             humanReadableNumberUnit: formatter.humanReadableNumberUnit(Int64(cellularDown.byteCount + wifiDown.byteCount)) + "/s"
         )
         
-        let info = TrafficInfo(
-            totalTrafficInfo: trafficInfo,
-            cellularTrafficUp: cellularUp,
-            cellularTrafficDown: cellularDown,
-            cellularTrafficTotal: cellularTotal,
-            wifiTrafficUp: wifiUp,
-            wifiTrafficDown: wifiDown,
-            wifiTrafficTotal: wifiTotal,
-            upTrafficTotal: upTotal,
-            downTrafficTotal: downTotal
+        let perSecond = TrafficInfoPack(
+            cellularUp: cellularUp,
+            cellularDown: cellularDown,
+            cellularTotal: cellularTotal,
+            wifiUp: wifiUp,
+            wifiDown: wifiDown,
+            wifiTotal: wifiTotal,
+            upTotal: upTotal,
+            downTotal: downTotal
         )
         
-        self.historyTotal = trafficInfo
+        let info = TrafficInfo(
+            totalTraffic: totalTraffic,
+            trafficPerSecond: perSecond
+        )
+        
+        self.historyTotal = totalTraffic
         
         return info
     }

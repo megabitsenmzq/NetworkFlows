@@ -17,21 +17,21 @@ struct ComplexDemoView: View {
                     Image(systemName: "wifi")
                         .opacity(0.5)
                     Spacer()
-                    Text(traffic.newTrafficInfo?.totalTrafficInfo.wifiTotal.humanReadableNumber ?? "--")
+                    Text(traffic.newTrafficInfo?.totalTraffic.wifiTotal.humanReadableNumber ?? "--")
                     +
                     Text(" ")
                     +
-                    Text(traffic.newTrafficInfo?.totalTrafficInfo.wifiTotal.humanReadableNumberUnit ?? "--")
+                    Text(traffic.newTrafficInfo?.totalTraffic.wifiTotal.humanReadableNumberUnit ?? "--")
                 }
                 HStack {
                     Image(systemName: "antenna.radiowaves.left.and.right")
                         .opacity(0.5)
                     Spacer()
-                    Text(traffic.newTrafficInfo?.totalTrafficInfo.cellularTotal.humanReadableNumber ?? "--")
+                    Text(traffic.newTrafficInfo?.totalTraffic.cellularTotal.humanReadableNumber ?? "--")
                     +
                     Text(" ")
                     +
-                    Text(traffic.newTrafficInfo?.totalTrafficInfo.cellularTotal.humanReadableNumberUnit ?? "--")
+                    Text(traffic.newTrafficInfo?.totalTraffic.cellularTotal.humanReadableNumberUnit ?? "--")
                 }
             }
             VStack {
@@ -39,21 +39,21 @@ struct ComplexDemoView: View {
                     Image(systemName: "chevron.up")
                         .opacity(0.5)
                     Spacer()
-                    Text(traffic.newTrafficInfo?.upTrafficTotal.humanReadableNumber ?? "--")
+                    Text(traffic.newTrafficInfo?.trafficPerSecond.upTotal.humanReadableNumber ?? "--")
                     +
                     Text(" ")
                     +
-                    Text(traffic.newTrafficInfo?.upTrafficTotal.humanReadableNumberUnit ?? "--")
+                    Text(traffic.newTrafficInfo?.trafficPerSecond.upTotal.humanReadableNumberUnit ?? "--")
                 }
                 HStack {
                     Image(systemName: "chevron.down")
                         .opacity(0.5)
                     Spacer()
-                    Text(traffic.newTrafficInfo?.downTrafficTotal.humanReadableNumber ?? "--")
+                    Text(traffic.newTrafficInfo?.trafficPerSecond.downTotal.humanReadableNumber ?? "--")
                     +
                     Text(" ")
                     +
-                    Text(traffic.newTrafficInfo?.downTrafficTotal.humanReadableNumberUnit ?? "--")
+                    Text(traffic.newTrafficInfo?.trafficPerSecond.downTotal.humanReadableNumberUnit ?? "--")
                 }
             }
         }
