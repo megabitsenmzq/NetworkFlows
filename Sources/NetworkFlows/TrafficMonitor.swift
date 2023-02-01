@@ -6,11 +6,6 @@
 //
 
 import Foundation
-
-enum TrafficMonitorError: Error {
-    case internalError(String)
-}
-
 /// Result struct.
 public struct TrafficInfo {
     public var totalTraffic: TrafficInfoPack
@@ -44,35 +39,6 @@ public class TrafficMonitor: NSObject {
         guard let info = calcTrafficInfo() else { return }
         newTrafficInfo = info
         delegate?.trafficMonitor(updatedInfo: info)
-    }
-    
-    /// Get the latest traffic info for one time. A Non-async version of this function is also available.
-    /// - Returns: Latest traffic per second info.
-    @available(macOS 10.15, *)
-    @available(iOS 13.0, *)
-    public func getTrafficInfo() async throws -> TrafficInfo {
-        if let newTrafficInfo = newTrafficInfo {
-            return newTrafficInfo
-        } else {
-            try await Task.sleep(nanoseconds: 1_000_000_000)
-            guard let newTrafficInfo = newTrafficInfo else {
-                throw TrafficMonitorError.internalError("Timer not running.")
-            }
-            return newTrafficInfo
-        }
-    }
-    
-    /// Get the latest traffic info for one time. An Async version of this function is also available.
-    /// - Parameter completion: Callback to give you latest traffic per second info.
-    public func getTrafficInfo(completion: @escaping (TrafficInfo)->()) {
-        if let newTrafficInfo = newTrafficInfo {
-            completion(newTrafficInfo)
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                guard let newTrafficInfo = self.newTrafficInfo else { return }
-                completion(newTrafficInfo)
-            }
-        }
     }
     
     func calcTrafficInfo() -> TrafficInfo? {
