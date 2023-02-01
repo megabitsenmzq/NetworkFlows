@@ -24,11 +24,11 @@ Value and unit are in separate properties, so you can display them as you like.
 
 1. Add the ObservedObject.
 
-```
+```Swift
 @ObservedObject var traffic = ObservableTrafficMonitor.observableShared
 ```
 2. Show everything you want.
-```
+```Swift
 Text(traffic.newTrafficInfo?.trafficPerSecond.downTotal.humanReadableNumber ?? "--")
 +
 Text(" ")
@@ -40,7 +40,7 @@ It should look like: ``` 100 KB/s ```.
 ### With Delegate
 
 1. Conform to TrafficMonitorDelegate.
-```
+```Swift
 func trafficMonitor(updatedInfo: TrafficInfo) {
     let number = updatedInfo.trafficPerSecond.downTotal.humanReadableNumber
     let unit = updatedInfo.trafficPerSecond.downTotal.humanReadableNumberUnit
@@ -49,7 +49,7 @@ func trafficMonitor(updatedInfo: TrafficInfo) {
 ```
 2. Set the delegate to self.
 
-```
+```Swift
 TrafficMonitor.shared.delegate = self
 ```
 
